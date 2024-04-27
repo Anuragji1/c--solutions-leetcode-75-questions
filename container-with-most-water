@@ -1,0 +1,81 @@
+**Container With Most Water**
+
+Problem Statement 11) You are given an integer array height of length n. There are n vertical lines drawn such that the two endpoints of the ith line are (i, 0) and (i, height[i]).
+
+Find two lines that together with the x-axis form a container, such that the container contains the most water.
+
+Return the maximum amount of water a container can store.
+
+Notice that you may not slant the container.
+
+ 
+
+Example 1:
+
+
+Input: height = [1,8,6,2,5,4,8,3,7]
+Output: 49
+Explanation: The above vertical lines are represented by array [1,8,6,2,5,4,8,3,7]. In this case, the max area of water (blue section) the container can contain is 49.
+Example 2:
+
+Input: height = [1,1]
+Output: 1
+ 
+
+Constraints:
+
+n == height.length
+2 <= n <= 105
+0 <= height[i] <= 104
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+SOLUTION = class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int left = 0, right = height.size() - 1, maxArea = 0;
+
+        while (left < right) {
+            int area = min(height[left], height[right]) * (right - left);
+            maxArea = max(maxArea, area);
+
+            if (height[left] < height[right]) {
+                left++;  // Move the shorter line to explore larger areas
+            } else {
+                right--;
+            }
+        }
+    
+        return maxArea;
+    }
+};
+
+----Explanation :-
+Finding Maximum Container Area:
+
+Initialization:
+
+The function takes a vector of integers height as input, where each element represents the height of a wall.
+It initializes two integer variables:
+left starting index (0) to represent the left wall of the container.
+right ending index (vector size minus 1) to represent the right wall of the container.
+It initializes an integer variable maxArea (set to 0) to store the maximum area found so far.
+Two-Pointer Approach:
+
+It uses a while loop that continues as long as left is less than right (meaning there are walls to consider on both sides). This loop iterates through possible container widths by moving the left or right wall.
+Calculating Area:
+
+Inside the loop, it calculates the area of a potential container formed by the current left and right walls. The area is calculated as the minimum height between the left and right walls (min(height[left], height[short])) multiplied by the width (right - left). This width represents the distance between the two walls.
+Updating Maximum Area:
+
+The calculated area is compared with the current maxArea. If the calculated area is greater, it updates maxArea to store the new maximum area found so far.
+Moving the Shorter Wall:
+
+To explore containers with potentially larger areas, the code strategically moves the shorter wall towards the center. It checks if the height of the left wall (height[left]) is less than the height of the right wall (height[right]).
+If the left wall is shorter:
+It increments left to move the left wall one position to the right. This increases the width but might also decrease the area if a higher wall is not encountered on the left.
+If the right wall is shorter or equal:
+It decrements right to move the right wall one position to the left. This also increases the width but might affect the area depending on the height of the wall on the right.
+Returning Maximum Area:
+
+After the loop iterates through all possible container widths by moving left or right, the maxArea variable will hold the maximum area of a container that can be formed with the given wall heights.
+The function returns the maxArea.
